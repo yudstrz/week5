@@ -90,14 +90,26 @@ class EmployeeListState extends State<EmployeeList> {
           search_icon(),
         ],
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: employee.length,
+        separatorBuilder: (context, index) => const Divider(height: 1),
         itemBuilder: (context, index) {
           final item = employee[index];
 
           return ListTile(
-            title: Text(item.name),
-            subtitle: Text(item.birthday),
+            leading: CircleAvatar(
+              backgroundColor: Colors.blue.shade100,
+              child: Text(
+                item.name.isNotEmpty ? item.name[0].toUpperCase() : '?',
+                style: TextStyle(color: Colors.blue.shade800, fontWeight: FontWeight.bold),
+              ),
+            ),
+            title: Text(
+              item.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(item.email),
+            trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.pushNamed(context, 'employee_detail',
                   arguments: [item.id]).then(reloadDataEmployee);
@@ -147,15 +159,26 @@ class EmployeeListState extends State<EmployeeList> {
       cursorColor: Colors.white,
       style: const TextStyle(
         color: Colors.white,
-        fontSize: 20,
+        fontSize: 18,
       ),
       textInputAction: TextInputAction.search,
       onChanged: (value) => filterEmployee(value),
-      decoration: const InputDecoration(
-        hintText: 'Enter to Search',
-        hintStyle: TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255),
-          fontSize: 20,
+      decoration: InputDecoration(
+        hintText: 'Search employees...',
+        hintStyle: const TextStyle(
+          color: Colors.white70,
+          fontSize: 18,
+        ),
+        border: InputBorder.none,
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.close, color: Colors.white),
+          onPressed: () {
+            setState(() {
+              searchKeyword.clear();
+              searchStatus = false;
+              filterEmployee('');
+            });
+          },
         ),
       ),
     );

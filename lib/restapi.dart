@@ -4,12 +4,10 @@ import 'package:http/http.dart' as http;
 class DataService {
   Future insertEmployee(String appid, String name, String phone, String email,
       String address, String gender, String birthday, String profpic) async {
-    String uri = 'https://file.etter.cloud/d226fd9f5fcf8bc3cbdff22e2bd79efe/';
-
     try {
-      final response = await http.post(Uri.parse(uri), body: {
-        'token': '653086839b493f4b9fe2579c',
-        'project': 'office',
+      final response = await http.post(Uri.parse(fileUri), body: {
+        'token': token,
+        'project': project,
         'collection': 'employee',
         'appid': appid,
         'name': name,
